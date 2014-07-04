@@ -80,4 +80,68 @@ module SkypeBot
     end
 
   end
+
+  class Message
+    attr_accessor :response
+    attr_reader :msg, :chat, :content, :user
+
+    def initialize(msg, chat)
+      @msg, @chat= msg, chat
+      @user = msg.user
+      @content = msg.body
+      response = []
+    end
+
+    alias_method :body, :content
+
+    def reply(msg)
+      response << msg
+    end
+
+    def user
+      msg.user
+    end
+
+    def id
+      chat.id
+    end
+
+    def to_s
+      content
+    end
+
+    alias_method :respond, :reply
+  end
+
+  class Command < Message
+    attr_reader :args, :flags, :command
+
+    def initialize(command, args, msg, chat)
+      @command, @args = command, args
+      @flags = []
+      super message, chat
+    end
+
+    def joined
+      args.join ' '
+    end
+
+    alias_method :body, :joined
+    alias_method :content, :joined
+
+    def arg(n)
+      args[n]
+    end
+
+    def has_flag?(flag)
+      return true if @flags.include? flag
+      OptionParser.new do |opts|
+        opts.on flag do
+          @flags << flag
+          return true
+        end
+      end.parse! @args
+      false
+    end
+  end
 end
