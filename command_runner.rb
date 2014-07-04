@@ -41,7 +41,7 @@ module SkypeBot
     def parse_args(args)
       options = {skip: false}
       OptionParser.new do |opts|
-        opts.banner = 'Usage: skypebot.rb [options]'
+        opts.banner = 'Usage: ruby skypebot.rb [options]'
 
         opts.on '-i', '--id ID', 'Select chat by ID' do |id|
           options[:id] = id
@@ -52,7 +52,7 @@ module SkypeBot
         opts.on '-m', '--members', Array, 'Select a chat containing member(s)' do |members|
           options[:members] = true
         end
-        opts.on '-s', '--skip', 'Read all messages from the beginning' do
+        opts.on '-s', '--skip', 'Begin at the most recent message' do
           options[:skip] = true
         end
       end.parse!
