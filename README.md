@@ -26,10 +26,10 @@ The goal of this bot is to make a DSL for creating commands
 Example (Not yet implemented):
 ```ruby
 command 'hello', help: 'Get a greeting' do |cmd|
-    if cmd.has_flag? 'casual'
-        cmd.reply "Hi #{cmd.user}"
-    else
-        cmd.reply "Greetings, #{cmd.user}."
-    end
+  if cmd.has_flag? 'casual'
+    cmd.reply "Hi #{cmd.user}"
+  else
+    cmd.reply "Greetings, #{cmd.user}."
+  end
 end
 ```
