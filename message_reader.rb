@@ -23,7 +23,6 @@ module SkypeBot
       else
         @last_id = 0
       end
-      @lol = 'LOL'
 
       super &self
       self.abort_on_exception = true
