@@ -134,6 +134,9 @@ module SkypeBot
     end
 
     def has_flag?(flag)
+      # Double-dash is assumed if flag is longer than
+      # one character
+      flag = (flag.length > 1 ? '--' : '-') + flag
       return true if @flags.include? flag
       OptionParser.new do |opts|
         opts.on flag do
