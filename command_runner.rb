@@ -13,7 +13,7 @@ module SkypeBot
       @config.command_paths = Dir['commands/*.rb']
       @config.listener_paths = Dir['listeners/*.rb']
 
-      @config.initializers.each { |f| require f }
+      @config.initializers.each { |f| load f }
     end
 
     def run
@@ -89,13 +89,13 @@ module SkypeBot
       @msg, @chat= msg, chat
       @user = msg.user
       @content = msg.body
-      response = []
+      @response = []
     end
 
     alias_method :body, :content
 
     def reply(msg)
-      response << msg
+      @response << msg
     end
 
     def user
@@ -119,7 +119,7 @@ module SkypeBot
     def initialize(command, args, msg, chat)
       @command, @args = command, args
       @flags = []
-      super message, chat
+      super msg, chat
     end
 
     def joined

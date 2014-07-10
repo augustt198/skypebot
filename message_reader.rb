@@ -3,15 +3,15 @@ module SkypeBot
 
     attr_reader :chat
     attr_accessor :last_id # The last message ID read
-    attr_reader :commands, :listeners
+    attr_accessor :commands, :listeners
 
     # `skip` param skips over all prexisting messages
     def initialize(chat, config, skip = true)
       @chat = chat
       @listeners = []
       @commands = {}
+      Executor.message_reader = self
 
-      
       config.command_paths.each { |x| load x }
       puts "#{config.command_paths.length} command files loaded"
       config.listener_paths.each { |x| load x }
@@ -25,6 +25,7 @@ module SkypeBot
       end
 
       super &self
+
       self.abort_on_exception = true
     end
 
@@ -51,45 +52,56 @@ module SkypeBot
       content = msg.body
       args = content.split ' '
       if args[0] and args[0].start_with?(SkypeBot::CMD_DELIMITER)
-        command_name = args.shift
-        command_name.slice!(1, command_name.length - 1)
+        command_name = args[0]
+        command_name = command_name.slice(1, command_name.length - 1)
         command = find_command(command_name)
-        chat.post 'Unknown command' unless command
-        
-        to_read = SkypeBot::Command.new(command_name, args, msg, chat)
-
-        command[:block].call(to_read)
+        if command
+          args.shift
+          to_read = SkypeBot::Command.new(command_name, args, msg, chat)
+          instance_exec to_read, &command[:block]
+        else
+          chat.post "Unknown command '#{command_name}'" unless command
+        end
       else
         to_read = SkypeBot::Message.new(msg, chat)
-
       end
 
       @listeners.each do |listener|
         if listener[:match]
-          next unless (content =~ listener[:match]) == nil
+          next if (content =~ listener[:match]) == nil
         end
         listener[:block].call(to_read)
       end
-
+      if to_read.response.length > 0
+        chat.post to_read.response.join("\n")
+      end
     end
 
     def find_command(cmd)
       @commands.each_pair do |name, info|
-        if name == cmd or info[:aliases].include?(name)
+        if name == cmd or (info[:aliases].is_a?(Array) and info[:aliases].include?(name))
           return info
         end
       end
       nil
     end
+  end
+
+  module Executor
+    extend self
+
+    attr_accessor :message_reader
 
     def on_message(options = {}, &block)
-      @listeners << options.merge(block: block)
+      Executor.message_reader.listeners << options.merge(block: block)
     end
-
     alias_method :listen, :on_message
 
     def command(name, options = {}, &block)
-      @commands[name] = options.merge(block: block)
+      Executor.message_reader.commands[name] = options.merge(block: block)
     end
+    alias_method :on_command, :command
+    alias_method :register_command, :command
+
   end
 end

@@ -1,0 +1,9 @@
+# Example listener
+
+# Require the command runner
+require './command_runner'
+
+# Put your listener inside the SkypeBot::Executor module
+SkypeBot::Executor.listen match: /(skypebot)/i do |msg|
+  msg.reply 'I heard my name!'
+end
