@@ -10,6 +10,7 @@ module SkypeBot
       @config = OpenStruct.new
 
       @config.initializers = Dir['initializers/*.rb']
+      @config.util_paths = Dir['utils/*.rb']
       @config.command_paths = Dir['commands/*.rb']
       @config.listener_paths = Dir['listeners/*.rb']
 

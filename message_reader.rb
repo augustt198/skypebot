@@ -12,6 +12,8 @@ module SkypeBot
       @commands = {}
       Executor.message_reader = self
 
+      config.util_paths.each { |x| load x }
+
       config.command_paths.each { |x| load x }
       puts "#{config.command_paths.length} command files loaded"
       config.listener_paths.each { |x| load x }

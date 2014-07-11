@@ -10,6 +10,7 @@ module SkypeBot
   VERSION = '0.0.1'
   LOOP_SLEEP = 2 # Time in seconds between each message lookup loop
   TIME_FORMAT = '%T'
+  CONFIG = OpenStruct.new
 end
 
 if ARGV[0] == 'list-chats'

@@ -1,3 +1,3 @@
 # Place any initializers here, such as setting up API keys
 
-SkypeBot::GIST_USERNAME = 'xxx'
+SkypeBot::CONFIG.gist_username = 'xxx'

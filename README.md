@@ -23,7 +23,7 @@ Usage: ruby skypebot.rb [options]
 ## Goal
 The goal of this bot is to make a DSL for creating commands
 
-Example (Not yet implemented):
+Example:
 ```ruby
 command 'hello', help: 'Get a greeting' do |cmd|
   if cmd.has_flag? 'casual'
@@ -31,5 +31,12 @@ command 'hello', help: 'Get a greeting' do |cmd|
   else
     cmd.reply "Greetings, #{cmd.user}."
   end
+end
+```
+
+Adding listeners is also supported:
+```ruby
+listen match: /(skypebot)/i do |msg|
+  msg.reply 'I heard my name!'
 end
 ```
