@@ -70,7 +70,11 @@ module SkypeBot
 
       @listeners.each do |listener|
         if listener[:match]
-          next if (content =~ listener[:match]) == nil
+          if match.is_a? Regexp
+            next if (content =~ listener[:match]) == nil
+          elsif match.is_a? String
+            next if content != listener[:match]
+          end
         end
         listener[:block].call(to_read)
       end

@@ -20,10 +20,9 @@ Usage: ruby skypebot.rb [options]
     -s, --skip                       Begin at the most recent message
 ```
 
-## Goal
-The goal of this bot is to make a DSL for creating commands
+## Commands & Listeners
+This SkypeBot framework provides a DSL for easily creating commands and listeners.
 
-Example:
 ```ruby
 command 'hello', help: 'Get a greeting' do |cmd|
   if cmd.has_flag? 'casual'
