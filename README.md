@@ -39,3 +39,4 @@ listen match: /(skypebot)/i do |msg|
   msg.reply 'I heard my name!'
 end
 ```
+If the `match:` option is not present, all messages will be listened to.
