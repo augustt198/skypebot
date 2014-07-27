@@ -7,7 +7,7 @@ require './message_reader'
 
 module SkypeBot
   CMD_DELIMITER = '$' # The command delimiter
-  VERSION = '0.0.1'
+  VERSION = '0.0.2'
   LOOP_SLEEP = 2 # Time in seconds between each message lookup loop
   TIME_FORMAT = '%T'
   CONFIG = OpenStruct.new

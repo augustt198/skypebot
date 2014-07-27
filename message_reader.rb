@@ -1,3 +1,5 @@
+require './utils/scheduler'
+
 module SkypeBot
   class MessageReader < Thread
 
@@ -94,6 +96,7 @@ module SkypeBot
   end
 
   module Executor
+    include SkypeBot::Scheduler
     extend self
 
     attr_accessor :message_reader
